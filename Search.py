@@ -6,6 +6,7 @@ import argparse
 import matplotlib.pyplot as plt	
 import math
 import numpy as np
+import gzip
 
 parser = argparse.ArgumentParser(description='Searches mentors and words, associated to given queries.')
 parser.add_argument('-w', help='Searches for words, rather than mentors', action='store_true', dest='search_words')
@@ -18,7 +19,7 @@ args = parser.parse_args()
 search_words, query, evaluation, vis = args.search_words, args.query, args.evaluation, args.vis
 
 word2vec = {}
-embeddings = open('word_embeddings.csv')
+embeddings = gzip.open('word_embeddings.csv.gz')
 _, dim = embeddings.next().split()
 dim = int(dim)
 for line in embeddings:
@@ -31,7 +32,7 @@ target = word2vec
 
 if not search_words:	
 	mentor2vec = {}
-	mentor_vec = open('profiles.csv')
+	mentor_vec = gzip.open('profiles.csv.gz')
 	for line in mentor_vec:
 		mentorvec = line.split()
 		mentor = mentorvec[0]
@@ -104,7 +105,7 @@ def vis(query, words):
 
 	a = a/np.max(a)
 	
-	reduced_matrix = tsne(a, 2, 4)
+	reduced_matrix = tsne(a, 2, 		4)
 
 	max_x = np.max(reduced_matrix, axis=0)[0]
 	max_y = np.amax(reduced_matrix, axis=0)[1]
