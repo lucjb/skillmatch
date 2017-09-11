@@ -1,7 +1,6 @@
 
 from email.parser import Parser
 from email_reply_parser import EmailReplyParser
-from rake_nltk import Rake
 from os import listdir
 from os.path import isfile, join
 import sys
@@ -16,6 +15,9 @@ import string
 import nltk.data
 from talon import quotations
 from talon.signature.bruteforce import extract_signature
+
+
+
 talon.init()
 
 
@@ -29,8 +31,7 @@ corpus = open('corpus.txt', 'w')
 for mentor_path in mentor_dirs:
 	print mentor_path
 	mentor = mentor_path.split('/')[1]
-	folders = [join(mentor_path, f) for f in listdir(mentor_path) if not isfile(join(mentor_path, f))]
-	text = ''
+	folders = [join(mentor_path, f) for f in listdir(mentor_path) if not isfile(join(mentor_path, f))
 
 	for folder in folders:
 		mail_files = [join(folder, f) for f in listdir(folder) if isfile(join(folder, f))]
