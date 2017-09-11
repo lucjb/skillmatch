@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 Search.py
 Interactive tool to search mentors based on skills and word synonims. It also supports evaluation, and visualization of embeddings.
+=======
+
+>>>>>>> a1331d4c908fe180a655b71f4a23a534e7489efc
 
 CreateCorpus.py 
 Receives no parameters, assumes the enron emails data set inflated directory (http://www.cs.cmu.edu/~./enron/enron_mail_20150507.tar.gz) is in the same directory.
@@ -13,3 +17,8 @@ CreateSendingProgiles.sh
 Creates mentor profiles, based on the enron emails data set.
 Outpus a single file, profiles.csv
 
+<<<<<<< HEAD
+=======
+Search.py
+Interactive tool to search mentors based on skills and word synonims. It also supports evaluation, and visualization of embeddings.
+>>>>>>> a1331d4c908fe180a655b71f4a23a534e7489efc
