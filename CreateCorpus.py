@@ -19,13 +19,13 @@ from talon.signature.bruteforce import extract_signature
 talon.init()
 
 
-root_path = 'maildir'
+root_path = '../skillmatch/maildir'
 mentor_dirs = [join(root_path, f) for f in listdir(root_path) if not isfile(join(root_path, f))]
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 
 email_ids = set()
 table = string.maketrans("","")
-corpus = open('corpus4.txt', 'w')
+corpus = open('corpus.txt', 'w')
 for mentor_path in mentor_dirs:
 	print mentor_path
 	mentor = mentor_path.split('/')[1]

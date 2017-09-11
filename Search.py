@@ -14,7 +14,7 @@ args = parser.parse_args()
 search_words, query, evaluation = args.search_words, args.query, args.evaluation
 
 word2vec = {}
-embeddings = open('enron_embeddings5.csv')
+embeddings = open('word_embeddings.csv')
 _, dim = embeddings.next().split()
 dim = int(dim)
 for line in embeddings:
@@ -55,33 +55,39 @@ def find(query):
 def evaluate():
 	queries = {
 	'trading': ['kitchen-l', 'zipper-a', 'dean-c', 'scholtes-d', 'baughman-d', 'bass-e', 'saibi-e', 'schwieger-j', 'quenet-j', 'stepenovitch-j', 'forney-j', 'ruscitti-k', 'swerzbin-m', 'slinger-r', 'kuykendall-t'], 
+	'commodities': ['kitchen-l', 'zipper-a', 'dean-c', 'scholtes-d', 'baughman-d', 'bass-e', 'saibi-e', 'schwieger-j', 'quenet-j', 'stepenovitch-j', 'forney-j', 'ruscitti-k', 'swerzbin-m', 'slinger-r', 'kuykendall-t'], 
 	'legal':['haedicke-m', 'derrick-j'],
 	'law': ['haedicke-m', 'derrick-j'], 
 	'legal affairs':['haedicke-m'],
 	'risk':['causholli-m', 'buy-r', 'kaminski-v'],
 	'risk management':['causholli-m', 'buy-r', 'kaminski-v'],
-	'Government Affairs':['steffes-j', 'dasovich-j'],
-	'Government':['steffes-j', 'dasovich-j'],
-	'governmental affairs':['steffes-j', 'dasovich-j'],
+	'Government Affairs':['hain-m', 'steffes-j', 'dasovich-j'],
+	'Government':['hain-m', 'steffes-j', 'dasovich-j'],
+	'governmental affairs':['hain-m', 'steffes-j', 'dasovich-j'],
 	'logistics':['farmer-d'],
 	'gas': ['horton-s'],
-	'pipeline': ['hyatt-k', 'horton-s']
-
+	'pipeline': ['hyatt-k', 'horton-s'],
+	'paper':['causholli-m'],
+	'pulp':['causholli-m'],
+	'metal':['sherriff-j']
 	}
 
 	hits = 0.
 	total = 0.
 	for q, e in queries.iteritems():
 		r = zip(*find(q)[:5])[1]
+		print q
 		total += len(r)
 		for c in r:
 			for ei in e:
 				if ei in c:
 					hits+=1
+					print c
+		print '=========================q'
 	print 'Precision@5', hits/total
 
 
-queries = ['pricing', 'risk management', 'argentina', 'accounting', 'god', 'human resources', 'nuclear energy', 'linux sql', 'computers', 'telecommunications', 'legal affairs', 'hiring', 'project management', 'trading', 'finance', 'marketing', 'renewable energy', 'solar energy', 'paper', 'media']
+queries = ['investment', 'pricing', 'risk management', 'argentina', 'accounting', 'god', 'human resources', 'nuclear energy', 'linux sql', 'computers', 'telecommunications', 'legal affairs', 'hiring', 'project management', 'trading', 'finance', 'marketing', 'renewable energy', 'solar energy', 'paper', 'media']
 
 #queries = ['Regulatory Affairs', 'Logistics', 'Risk Management', 'legal', 'Government Affairs', 'Cash']
 

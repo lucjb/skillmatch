@@ -22,7 +22,7 @@ talon.init()
 
 sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 
-root_path = 'maildir'
+root_path = '../skillmatch/maildir'
 mentor_dirs = [join(root_path, f) for f in listdir(root_path) if not isfile(join(root_path, f))]
 
 email2mentor = {}
@@ -38,7 +38,7 @@ for mentor_path in mentor_dirs:
 				email2mentor[mentor_email_address] = mentor_path
 
 c=0
-mentor2text = {}	
+mentor2text = {}
 email_ids = set()
 for mentor_path in mentor_dirs:
 	folders = [join(mentor_path, f) for f in listdir(mentor_path) if not isfile(join(mentor_path, f))]
@@ -68,7 +68,7 @@ print len(email_ids)
 
 
 word2vec = {}
-embeddings = open('enron_embeddings5.csv')
+embeddings = open('word_embeddings.csv')
 _, dim = embeddings.next().split()
 dim = int(dim)
 for line in embeddings:
@@ -100,7 +100,7 @@ for mentor, emails in mentor2text.iteritems():
 					except KeyError:
 						pass
 
-	profiles_file.write(mentor + ' ')
+	profiles_file.write(mentor.split('/')[-1] + ' ')
 	mentor_vec.tofile(profiles_file, sep=' ')
 	profiles_file.write('\n')
 
