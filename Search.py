@@ -1,17 +1,21 @@
 import sys
 import numpy as np
 from scipy import spatial
-
+from tsne import tsne
 import argparse
+import matplotlib.pyplot as plt	
+import math
+import numpy as np
 
 parser = argparse.ArgumentParser(description='Searches mentors and words, associated to given queries.')
 parser.add_argument('-w', help='Searches for words, rather than mentors', action='store_true', dest='search_words')
 parser.add_argument('-q', help='Searches the given query. If not provided, a list of test queries is used', dest='query')
 parser.add_argument('-e', help='Runs evaluation test', dest='evaluation', action='store_true')
+parser.add_argument('-v', help='Visualizes output using t-sne', dest='vis', action='store_true')
 args = parser.parse_args()
 
 
-search_words, query, evaluation = args.search_words, args.query, args.evaluation
+search_words, query, evaluation, vis = args.search_words, args.query, args.evaluation, args.vis
 
 word2vec = {}
 embeddings = open('word_embeddings.csv')
@@ -36,6 +40,7 @@ if not search_words:
 
 	target = mentor2vec
 	
+
 
 
 
@@ -87,12 +92,60 @@ def evaluate():
 	print 'Precision@5', hits/total
 
 
+def vis(query, words):
+
+	a = np.zeros((len(words)+len(query), dim))
+	for i, w in enumerate(words):
+		a[i,:]=target[w]
+
+
+	for i, w in enumerate(query):
+		a[len(words)+i,:]=word2vec[w]
+
+	a = a/np.max(a)
+	
+	reduced_matrix = tsne(a, 2, 4)
+
+	max_x = np.max(reduced_matrix, axis=0)[0]
+	max_y = np.amax(reduced_matrix, axis=0)[1]
+	plt.xlim((-max_x-10,max_x+10))
+	plt.ylim((-max_y-10,max_y+10))
+
+	plt.scatter(reduced_matrix[:, 0], reduced_matrix[:, 1], 20)
+	for i, w in enumerate(words):
+	    target_word = w
+	    x = reduced_matrix[i, 0]
+	    y = reduced_matrix[i, 1]
+            clr='blue'
+	    if i<5:
+		clr = 'green'
+	
+	    plt.annotate(target_word, (x,y), color=clr)
+
+	for i, w in enumerate(query):
+	    target_word = w
+	    x = reduced_matrix[i+len(words), 0]
+	    y = reduced_matrix[i+len(words), 1]
+	
+	    plt.annotate(target_word, (x,y), color='black')
+
+
+	plt.show()
+
+
 queries = ['investment', 'pricing', 'risk management', 'argentina', 'accounting', 'god', 'human resources', 'nuclear energy', 'linux sql', 'computers', 'telecommunications', 'legal affairs', 'hiring', 'project management', 'trading', 'finance', 'marketing', 'renewable energy', 'solar energy', 'paper', 'media']
 
 #queries = ['Regulatory Affairs', 'Logistics', 'Risk Management', 'legal', 'Government Affairs', 'Cash']
 
 if query:
-	print zip(*find(query)[:10])[1]
+	scores, words = zip(*find(query)[:200])
+	print words[:10]
+	if vis:
+		vis(query.split(), words)
+
+
+
+
 elif evaluation:
 	evaluate()
 else:
